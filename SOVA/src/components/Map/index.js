@@ -6,11 +6,13 @@ import styles from './styles';
 import io from 'socket.io-client';
 import DeviceInfo from 'react-native-device-info';
 
-const socket = io('http://192.168.0.104:6970');
+/* const socket = io('http://192.168.0.104:6970'); */
+const socket = io('http://69cfd8f1658d.ngrok.io');
 socket.on('connect', () => console.log(`Conexão com o servidor estabelecida. ID: ${socket.id}`));
 socket.on('welcome', (data) => console.log(data));
 
-const DeviceMacAddress = DeviceInfo.getMacAddress();
+let DeviceMacAddress;
+DeviceInfo.getMacAddress().then(mac => DeviceMacAddress = mac);
 
 const LATITUDE_DELTA = 0.009;
 const LONGITUDE_DELTA = 0.009;
@@ -38,7 +40,7 @@ export default class Map extends Component {
 
                 socket.emit('location', {
                     socketid: socket.id,
-                    DeviceMacAddress: DeviceMacAddress,
+                    deviceMacAddress: DeviceMacAddress,
                     location: initialPosition
                 });
 
@@ -64,10 +66,9 @@ export default class Map extends Component {
                 const { latitude, longitude } = position.coords;
                 const lastPosition = JSON.stringify(position);
 
-                console.log(lastPosition);
                 socket.emit('location', {
                     socketid: socket.id,
-                    DeviceMacAddress: DeviceMacAddress,
+                    deviceMacAddress: DeviceMacAddress,
                     location: lastPosition
                 });
 
