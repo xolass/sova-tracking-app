@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 import DeviceInfo from 'react-native-device-info';
 
 /* const socket = io('http://192.168.0.104:6970'); */
+/* const socket = io('http://192.168.0.111:7555'); */
 const socket = io('http://69cfd8f1658d.ngrok.io');
 socket.on('connect', () => console.log(`Conexão com o servidor estabelecida. ID: ${socket.id}`));
 socket.on('welcome', (data) => console.log(data));
